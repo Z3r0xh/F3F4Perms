@@ -23,6 +23,8 @@ public class F3F4PermsPlugin extends JavaPlugin {
     public static F3F4PermsPlugin plugin;
 
     private final LuckPermsHook luckPermsHook = new LuckPermsHook();
+    private final CMIHook cmiHook = new CMIHook();
+    private GameModeLogger gameModeLogger;
 
     @Override
     public void onLoad() {
@@ -33,10 +35,15 @@ public class F3F4PermsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        gameModeLogger = new GameModeLogger(this);
         PacketEvents.getAPI().init();
         Bukkit.getPluginManager().registerEvents(new F3F4PlayerListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(new F3F4PacketListener(), PacketListenerPriority.HIGHEST);
         luckPermsHook.register(this);
+        if (getConfig().getBoolean("useCMI", true)) {
+            cmiHook.register(this);
+        }
         new Metrics(this, 27254);
     }
 
@@ -71,15 +78,25 @@ public class F3F4PermsPlugin extends JavaPlugin {
     }
 
     public void changeGameMode(Player player, GameMode gameMode) {
-        String command = "/gamemode " + gameMode.toString().toLowerCase();
+        String fromMode = player.getGameMode().toString().toLowerCase();
+        String toMode = gameMode.toString().toLowerCase();
+
+        String command;
+        if (cmiHook.isCMIEnabled()) {
+            command = cmiHook.getGameModeCommand(toMode);
+        } else {
+            command = "/gamemode " + toMode;
+        }
         player.chat(command);
+
+        gameModeLogger.logGameModeChange(player, fromMode, toMode);
     }
 
     public boolean canUse(Player player) {
-        return player.isOp() || player.hasPermission("f3f4perms.use") || player.hasPermission("f3nperm.use");
+        return player.isOp() || player.hasPermission("f3f4perms.use");
     }
 
     public boolean isAdmin(CommandSender sender) {
-        return sender.isOp() || sender.hasPermission("f3f4perms.admin") || sender.hasPermission("f3nperm.admin");
+        return sender.isOp() || sender.hasPermission("f3f4perms.admin");
     }
 }

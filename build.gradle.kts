@@ -3,13 +3,14 @@ plugins {
 }
 
 group = "io.github.lumine1909"
-version = "1.1.0"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.codemc.io/repository/maven-snapshots/")
+    maven("https://jitpack.io")
 }
 
 dependencies {

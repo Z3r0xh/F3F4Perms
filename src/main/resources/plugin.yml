@@ -1,24 +1,25 @@
 name: F3F4Perms
-version: 1.1.0
+version: 1.0.0
 main: io.github.lumine1909.f3f4perms.F3F4PermsPlugin
 api-version: 1.13
 folia-supported: true
 description: Give player f3+f4 permission to toggle game mode, while proceeding it with command.
 authors:
-  - Lumine1909
+  - Z3r0x
 depend:
   - packetevents
 softdepend:
   - LuckPerms
+  - CMI
 commands:
   f3f4perms:
-  f3nperm:
+    description: Main F3F4Perms command
+    usage: /<command> [forceupdate]
+    aliases: [f3f4]
 permissions:
   f3f4perms.use:
-    default: op
-  f3nperm.use:
+    description: Allows using F3+F4 to change game mode
     default: op
   f3f4perms.admin:
-    default: op
-  f3nperm.admin:
+    description: Allows using admin commands like forceupdate
     default: op

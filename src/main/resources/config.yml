@@ -1,0 +1,6 @@
+# F3F4Perms Configuration
+
+# CMI Integration
+# If enabled and CMI is installed, will use CMI's gamemode change system
+# If disabled, will use vanilla /gamemode command
+useCMI: true
